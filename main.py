@@ -33,7 +33,7 @@ MODEL_PATH = os.path.join(MODEL_DIR, "plant_disease_prediction_model.h5")
 CLASS_INDICES_PATH = os.path.join(WORKING_DIR, "class_indices.json")
 
 # Google Drive file ID for the trained model
-MODEL_GDRIVE_ID = "1rKh-IElSdHTqax7XdfSdZTn-r8T_qWPf"
+MODEL_GDRIVE_ID = "1cDDNR6eYnMyGvX7dYkjNfu6fQLU6V6cr"
 
 
 # ──────────────────────────────────────────────
@@ -52,7 +52,7 @@ def download_model():
         st.error(f"❌ Failed to download model: {e}")
         st.info(
             "**Manual download:** Go to "
-            "[Google Drive](https://drive.google.com/file/d/1rKh-IElSdHTqax7XdfSdZTn-r8T_qWPf/view) "
+            "[Google Drive](https://drive.google.com/file/d/1cDDNR6eYnMyGvX7dYkjNfu6fQLU6V6cr/view) "
             f"→ download the file → place it at `{MODEL_PATH}`"
         )
         return False
