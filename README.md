@@ -76,6 +76,20 @@ Trained on the [PlantVillage Dataset](https://www.kaggle.com/datasets/abdallahal
 
 ---
 
+## 🛠️ How to Add New Plants or Diseases (Retraining)
+
+If you want the app to detect a brand new plant or disease, you must retrain the AI model. You cannot just upload new images to the app. Follow these steps:
+
+1. **Collect Images**: Find a dataset of the new plant disease. Put the images inside your dataset folder (e.g., `plantvillage dataset/color/Mango___Healthy/`).
+2. **Retrain the Model**: Open `notebooks/Plant_Disease_Prediction_CNN_Image_Classifier.ipynb` and run all the cells. The AI will learn the new images and generate a brand new `plant_disease_prediction_model.h5` file and an updated `class_indices.json` file.
+3. **Upload to Google Drive**: Upload the new `.h5` file to your Google Drive and set it to **"Anyone with the link"**.
+4. **Update the App**: 
+   - Open `main.py` and replace `MODEL_GDRIVE_ID` with the new Google Drive file ID.
+   - Replace the old `class_indices.json` in your project folder with the newly generated one.
+5. **Deploy**: Run `git commit` and `git push`. Streamlit will automatically fetch the new model and update your live website!
+
+---
+
 ## 📝 License
 
 This project is open source and available for educational purposes.
