@@ -43,11 +43,22 @@ MODEL_GDRIVE_ID = "1cDDNR6eYnMyGvX7dYkjNfu6fQLU6V6cr"
 def download_model():
     """Download the trained model from Google Drive if it doesn't exist locally."""
     if os.path.exists(MODEL_PATH):
-        return True
+        if os.path.getsize(MODEL_PATH) > 100_000_000:  # Must be > 100MB
+            return True
+        else:
+            # The file is likely a corrupted HTML page from a previous failed download
+            os.remove(MODEL_PATH)
+
     os.makedirs(MODEL_DIR, exist_ok=True)
     try:
         with st.spinner("⬇️ Downloading the trained model (547 MB)... This only happens once."):
             gdown.download(id=MODEL_GDRIVE_ID, output=MODEL_PATH, quiet=False, fuzzy=True)
+        
+        # Verify it downloaded the actual model and not a tiny HTML warning page
+        if os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) < 100_000_000:
+            os.remove(MODEL_PATH)
+            raise Exception("Downloaded file is too small (likely a Google Drive warning page).")
+            
         return os.path.exists(MODEL_PATH)
     except Exception as e:
         st.error(f"❌ Failed to download model: {e}")
@@ -219,9 +230,8 @@ with st.sidebar:
 st.title("🌱 Plant Disease Classifier")
 st.markdown("Upload an image of a plant leaf to identify potential diseases using AI.")
 
-# Attempt to download model if missing
-if not os.path.exists(MODEL_PATH):
-    download_model()
+# Attempt to download model if missing or corrupted
+download_model()
 
 # Load model and class indices
 model = load_model()
