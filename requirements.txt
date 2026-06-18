@@ -2,4 +2,4 @@ numpy
 streamlit
 tensorflow
 pillow
-gdown
+gdown>=5.2.0
