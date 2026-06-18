@@ -6,6 +6,7 @@ Built with Streamlit and TensorFlow.
 
 import os
 import json
+import gdown
 from PIL import Image
 
 
@@ -39,35 +40,14 @@ MODEL_GDRIVE_ID = "1cDDNR6eYnMyGvX7dYkjNfu6fQLU6V6cr"
 # ──────────────────────────────────────────────
 # Model Download & Loading
 # ──────────────────────────────────────────────
-def download_file_from_google_drive(id, destination):
-    import requests
-    URL = "https://docs.google.com/uc?export=download"
-    session = requests.Session()
-    response = session.get(URL, params={'id': id}, stream=True)
-    
-    token = None
-    for key, value in response.cookies.items():
-        if key.startswith('download_warning'):
-            token = value
-            break
-            
-    if token:
-        params = {'id': id, 'confirm': token}
-        response = session.get(URL, params=params, stream=True)
-        
-    with open(destination, "wb") as f:
-        for chunk in response.iter_content(32768):
-            if chunk:
-                f.write(chunk)
-
 def download_model():
-    """Download the trained model from Google Drive using requests."""
+    """Download the trained model from Google Drive if it doesn't exist locally."""
     if os.path.exists(MODEL_PATH):
         return True
     os.makedirs(MODEL_DIR, exist_ok=True)
     try:
         with st.spinner("⬇️ Downloading the trained model (547 MB)... This only happens once."):
-            download_file_from_google_drive(MODEL_GDRIVE_ID, MODEL_PATH)
+            gdown.download(id=MODEL_GDRIVE_ID, output=MODEL_PATH, quiet=False, fuzzy=True)
         return os.path.exists(MODEL_PATH)
     except Exception as e:
         st.error(f"❌ Failed to download model: {e}")
@@ -77,6 +57,7 @@ def download_model():
             f"→ download the file → place it at `{MODEL_PATH}`"
         )
         return False
+
 
 
 @st.cache_resource
