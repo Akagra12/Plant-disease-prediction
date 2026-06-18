@@ -52,7 +52,7 @@ def download_model():
     os.makedirs(MODEL_DIR, exist_ok=True)
     try:
         with st.spinner("⬇️ Downloading the trained model (547 MB)... This only happens once."):
-            gdown.download(id=MODEL_GDRIVE_ID, output=MODEL_PATH, quiet=False, fuzzy=True)
+            gdown.download(url=f"https://drive.google.com/uc?id={MODEL_GDRIVE_ID}", output=MODEL_PATH, quiet=False)
         
         # Verify it downloaded the actual model and not a tiny HTML warning page
         if os.path.exists(MODEL_PATH) and os.path.getsize(MODEL_PATH) < 100_000_000:
@@ -259,7 +259,7 @@ uploaded_image = st.file_uploader(
 
 if uploaded_image is not None:
     image = Image.open(uploaded_image)
-    st.image(image, caption="📷 Uploaded Leaf Image", use_container_width=True)
+    st.image(image, caption="📷 Uploaded Leaf Image", use_column_width=True)
 
     # Centered classify button
     _, col_btn, _ = st.columns([1, 2, 1])
