@@ -6,8 +6,8 @@ Built with Streamlit and TensorFlow.
 
 import os
 import json
-import gdown
 from PIL import Image
+
 
 import numpy as np
 import tensorflow as tf
